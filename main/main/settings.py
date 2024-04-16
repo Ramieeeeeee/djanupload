@@ -15,6 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -26,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-SITE_ID = 2
 
 # Application definition
 
@@ -38,17 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # additional modules
+    #additional modules
     'crispy_forms',
     'crispy_bootstrap5',
     'tinymce',
     'django_recaptcha',
 
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
 
     'blog',
     'users'
@@ -56,7 +51,7 @@ INSTALLED_APPS = [
 ]
 
 TINYMCE_DEFAULT_CONFIG = {
-    'height:': 900,
+    'height:':900,
     'selector': 'textarea',
     'plugins': 'print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons advtable export',
     'menubar': 'file edit view insert format tools table tc help',
@@ -74,7 +69,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'main.urls'
@@ -97,21 +91,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'main.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-#postgres://admin:iufaSzdvwrA5wPySnkfx5KpVnl6YN05S@dpg-coaogg7109ks73du035g-a.frankfurt-postgres.render.com/djan39
+#postgres://admin:iufaSzdvwrA5wPySnkfx5KpVnl6YN05S@dpg-coaogg7109ks73du035g-a/djan39
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
        'NAME': 'djan39',
        'USER': 'admin',
        'PASSWORD': 'iufaSzdvwrA5wPySnkfx5KpVnl6YN05S',
-       'HOST': 'dpg-coaogg7109ks73du035g-a.frankfurt-postgres.render.com',
+       'HOST': 'dpg-coaogg7109ks73du035g-a',
        'PORT': '5432',
    }
 }
 
-CSRF_TRUSTED_ORIGINS=['http://dpg-coaogg7109ks73du035g-a.frankfurt-postgres.render.com']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -131,6 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -142,12 +137,13 @@ USE_I18N = True
 
 USE_TZ = True
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_DIRS = [
-    BASE_DIR / 'static'
+STATIC_DIRS=[
+    BASE_DIR/'static'
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -158,12 +154,12 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'pasternakmary08@gmail.com'
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT=BASE_DIR/'staticfiles'
 
 import os
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = os.path.join(STATIC_URL, 'media')
+MEDIA_URL='media/'
+MEDIA_ROOT=os.path.join(STATIC_URL, 'media')
 
 RECAPTCHA_PUBLIC_KEY = '6LdRBGspAAAAABeX_sO6yAtKXHyZCMfMwgABtV4B'
 RECAPTCHA_PRIVATE_KEY = '6LdRBGspAAAAAFMplIT4RwKQpkjwSyFPQAMFz_Jj'
@@ -173,25 +169,6 @@ RECAPTCHA_PRIVATE_KEY = '6LdRBGspAAAAAFMplIT4RwKQpkjwSyFPQAMFz_Jj'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-APPEND_SLACH = False
 
-LOGIN_REDIRECT_URL = '/home'
-LOGOUt_REDIRECT_URL = '/login'
-
-SOCIALACCOUNT_LOGIN_ON_GET = True
-
-AUTHENTIFICATION_BACKENDS = [
-    'allauth.account.auth_backends.AuthenticationBackend'
-]
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
+LOGIN_REDIRECT_URL='/home'
+LOGOUt_REDIRECT_URL='/login'
