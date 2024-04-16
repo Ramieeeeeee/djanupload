@@ -1,0 +1,16 @@
+{% extends '../base.html' %}
+{% block content %}
+{% load has_group %}
+
+{% load crispy_forms_tags %}
+<div class="container-sm text-dark">
+  <form method="POST" action="/posts/create" class="w-50">
+    {%csrf_token%}
+    {{form.media}}
+    {{ form|crispy}}
+    <button type="submit" class="btn btn-success">Create</button>
+  </form>
+</div>
+{% endblock %}
+</body>
+</html>

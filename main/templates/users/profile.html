@@ -1,0 +1,77 @@
+{% extends '../base.html' %}
+{% block content %}
+{% load has_group %}
+
+<div>
+    {% load crispy_forms_tags %}
+    <div class="row">
+        <div class="col col-md-9">
+            {% if user == profile.user %}
+            <form method="POST" enctype="multipart/form-data">
+                {%csrf_token%}
+                {{form|crispy}}
+                <button type="submit">Change</button>
+            </form>
+            {% endif %}
+            <div class="d-inline-flex align-items-center justify-content-beetwen">
+                <h1>{{profile.user.username}}</h1>
+                 <img src="{{profile.image.url}}" style="max-width: 40%" ; alt="Profile image">
+
+                {% if is_subscribed == True %}
+                <button id="subscribe_btn" class="subscribe btn btn-outline-dark">Unsubscribe</button>
+                {% else %}
+                <button id="subscribe_btn" class="subscribe btn btn-dark">Subscribe</button>
+                {% endif %}
+
+                <p>Subscribers: <strong id="subs">{{ profile.subscribers.all|length }}</strong></p>
+            </div>
+        </div>
+        <div class="col col-md-3">
+            <ul class="list-group">
+                <li class="list-group-item">An item</li>
+                <li class="list-group-item"><a href="{% url 'change_user_password' %}"
+                                               class="link link-underline-info ">Change
+                    password</a></li>
+                <li class="list-group-item">A third item</li>
+                <li class="list-group-item">A fourth item</li>
+                <li class="list-group-item">And a fifth one</li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('#subscribe_btn').click(() => {
+        console.log('subscribe clicked');
+        $.ajax({
+            url: "{% url 'subscribe' %}",
+            type: 'POST',
+            data: {
+                'author': '{{ profile.slug }}',
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (data) {
+                let subscribers = parseInt($('#subs').text());
+                console.log(data.status)
+                if (data.status === "added") {
+                    $('#subscribe_btn').text('Unsubscribe');
+                    $('#subscribe_btn').removeClass('btn-dark');
+                    $('#subscribe_btn').addClass('btn-outline-dark');
+                    subscribers +=1
+                } else if (data.status === "removed") {
+                    $('#subscribe_btn').text('Subscribe');
+                    $('#subscribe_btn').removeClass('btn-outline-dark');
+                    $('#subscribe_btn').addClass('btn-dark');
+                    subscribers -=1
+                }
+                $('#subs').text(subscribers);
+            },
+            error: function (data) {
+                console.log('error')
+            }
+        })
+    })
+</script>
+{% endblock %}
+</body>
+</html>

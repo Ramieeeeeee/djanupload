@@ -1,0 +1,6 @@
+
+{% autoescape off %}
+<h1>Hi {{user.username}}</h1>
+<p>Please click on the link below and confirm registration</p>
+{{protocol}}://{{domain}}{% url 'activate_user' uid=uid token=token %}
+{% endautoescape %}

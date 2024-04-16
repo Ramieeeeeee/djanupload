@@ -1,0 +1,119 @@
+{% extends '../base.html' %}
+{% block content %}
+{% load has_group %}
+
+<div class="container">
+    <h1>Home Page</h1>
+    {% if users %}
+
+        {% for user in users%}
+            <div class="card-header d-flex">
+                <img src="{{ user.profile.image.url }}" style=" width: 30px;">
+                <a href="{% url 'profile' slug=user.profile.slug %}">{{user.username}}</a>
+            </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        {% for post in posts%}
+        <a class="card mb-3" href="{% url 'comment_post' post_id=post.id %}">
+            <div class="card-header d-flex">
+                <img src="{{ post.author.profile.image.url }}" style=" width: 30px;">
+                <a href="{% url 'profile' slug=post.author.profile.slug %}">{{post.author}}</a>
+            </div>
+            <div class="row g-0">
+                <div class="col-md-10">
+                    <div class="card-body">
+                        <h5 class="card-title">{{post.tittle}}</h5>
+                        <p class="card-text">{{post.content|safe}}</p>
+                        <p class="card-text"><small class="text-muted">{{post.updated_at}}</small></p>
+                    </div>
+                </div>
+
+                {% if user == post.author and user|has_group:'users' or user|has_group:'moderators'%}
+                <div class="col-md-2 d-flex align-items-center">
+                    <a href="{% url 'updating_post' post_id=post.id %}" type="button" class="btn btn-info">Update</a>
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#Delete"
+                            id="post_delete_btn" data-post_id='{{post.id}}'>Delete
+                    </button>
+                </div>
+                {% endif %}
+                {% if user|has_group:'moderators' %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary mx-4" name="user-id" value="{{ post.author.id }}">Ban
+                        User
+                    </button>
+
+                </form>
+
+                {% endif %}
+
+            </div>
+        </a>
+
+    {% endfor %}
+
+    {% endif %}
+    <!-- Modal -->
+    <div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="delete_btn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let deleteBtns = document.querySelectorAll('#post_delete_btn');
+            let confirmDeleteBtn = document.getElementById('delete_btn');
+
+            let modalWindow = $('#Delete')
+
+            let currentObject = null;
+
+            deleteBtns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    currentObject = btn.getAttribute('data-post_id');
+                    console.log('clicked')
+                });
+            });
+            confirmDeleteBtn.addEventListener('click', function () {
+                if (currentObject) {
+                    fetch(`/posts/delete/${currentObject}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            modalWindow.modal('hide')
+                            //перевірити id
+                            console.log($('#post_delete_btn[data-post_id="' + currentObject + '"]').closest('.card'))
+                            $('#post_delete_btn[data-post_id="' + currentObject + '"]').closest('.card').remove();
+                            currentObject = null;
+                        })
+                        .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    </script>
+
+</div>
+{% endblock %}
+</body>
+</html>

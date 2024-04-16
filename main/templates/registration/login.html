@@ -1,0 +1,20 @@
+{% extends '../base.html' %}
+{% block content %}
+
+{% load crispy_forms_tags %}
+<div class="container">
+    <form class="w-50" method="post">
+        {%csrf_token%}
+        {{ form|crispy}}
+        {% load socialaccount %}
+        <p>Don't have an account <a href="/singup" class="btn btn-outline-info">Create one!</a></p>
+
+        <button class="btn btn-outline-info">
+            <a href="{% provider_login_url 'google' %}"> Login with google</a>
+        </button>
+
+        <p>Forget password? <a href="{% url 'reset_user_password' %}" class="btn btn-warning">Reset!</a></p>
+        <button type="submit" class="btn btn-outline-info">Login</button>
+    </form>
+</div>
+{% endblock %}

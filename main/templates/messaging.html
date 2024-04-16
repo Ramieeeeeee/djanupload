@@ -1,0 +1,34 @@
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            <div class="container">
+                <div class="alert alert-success d-flex align-items-center " role="alert">
+                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+
+                    {{ message|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            </div>
+        {% endif %}
+                {% if message.tags == 'info' %}
+            <div class="container">
+               <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+
+                    {{ message|safe }}
+
+            </div>
+            </div>
+        {% endif %}
+        {% if message.tags == 'error' %}
+            <div class="container">
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+
+                        {{ message|safe }}
+
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif%}
