@@ -26,8 +26,11 @@ SECRET_KEY = 'django-insecure-ta@cj1_qhri9-(9kz(46b-_1+hn+1yw-v&i%cr3001b7__@n!j
 DEBUG = True
 
 ALLOWED_HOSTS = ["https://djanupload.onrender.com",
-                "djanupload.onrender.com"]
+                "djanupload.onrender.com",
+                "0.0.0.0:10000",
+                "https://0.0.0.0:10000"]
 
+SITE_ID = 2
 
 # Application definition
 
