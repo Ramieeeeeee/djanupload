@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-ta@cj1_qhri9-(9kz(46b-_1+hn+1yw-v&i%cr3001b7__@n!j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://djanupload.onrender.com",
+                "djanupload.onrender.com"]
 
 
 # Application definition
